@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "162552846763",
+    "project_id": "team-vidiyal-ad6fe",
+    "storage_bucket": "team-vidiyal-ad6fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162552846763:android:ecf9852591532b86431aee",
+        "android_client_info": {
+          "package_name": "com.example.vidiyal_login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "162552846763-jtt00shdkbsavdq3jgkv9vjlnc7egb6j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJw_7Bukz7luaUp0VI9CtAOGe863Akc5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "162552846763-jtt00shdkbsavdq3jgkv9vjlnc7egb6j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
