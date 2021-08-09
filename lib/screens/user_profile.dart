@@ -71,7 +71,7 @@ class _UserProfileState extends State<UserProfile> {
     return "complete";
   }
 
-  onReturnToPage(dynamic value) {
+  updateUserList(dynamic value) {
     _getDocsFromDatabase();
   }
 
@@ -116,7 +116,7 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, UserProfileAdd.id)
-                        .then(onReturnToPage);
+                        .then(updateUserList);
                   },
                 )
               ],
@@ -145,8 +145,8 @@ class _UserProfileState extends State<UserProfile> {
                           icon: Icon(Icons.arrow_forward),
                           onPressed: () {
                             Navigator.pushNamed(context, UserProfileUpdate.id,
-                                    arguments: {"docId": "12345"})
-                                .then(onReturnToPage);
+                                    arguments: _filteredDocs[index])
+                                .then(updateUserList);
                           },
                         ),
                       ),

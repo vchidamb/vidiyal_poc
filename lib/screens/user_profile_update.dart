@@ -7,9 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserProfileUpdate extends StatefulWidget {
   static const String id = 'user_profile_update';
 
-  // final String docId;
-  // UserProfileUpdate(this.docId);
-
   @override
   _UserProfileUpdateState createState() => _UserProfileUpdateState();
 }
@@ -73,16 +70,15 @@ class _UserProfileUpdateState extends State<UserProfileUpdate> {
 
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    print(args["docId"]);
+    final args = ModalRoute.of(context)!.settings.arguments
+        as QueryDocumentSnapshot<Map<String, dynamic>>;
 
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: BaseAppBar(
         appBar: AppBar(),
         leading: BackButton(),
-        title: Text('Add User Profile'),
+        title: Text('Update User Profile'),
         actions: ['Home', 'Logout'],
       ),
       body: SingleChildScrollView(
@@ -93,6 +89,7 @@ class _UserProfileUpdateState extends State<UserProfileUpdate> {
             child: Column(
               children: <Widget>[
                 TextFormField(
+                    initialValue: args["name"],
                     style: TextStyle(color: Colors.white, fontSize: 20),
                     decoration: InputDecoration(
                       labelText: 'Name',
@@ -105,6 +102,7 @@ class _UserProfileUpdateState extends State<UserProfileUpdate> {
                       name = value.toString();
                     }),
                 TextFormField(
+                    initialValue: args["email"],
                     keyboardType: TextInputType.emailAddress,
                     style: TextStyle(color: Colors.white, fontSize: 20),
                     decoration: InputDecoration(
@@ -118,7 +116,8 @@ class _UserProfileUpdateState extends State<UserProfileUpdate> {
                       email = value.toString();
                     }),
                 DropdownButtonFormField(
-                  style: TextStyle(color: Colors.black, fontSize: 20),
+                  value: args["role"],
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                   decoration: InputDecoration(
                     labelText: 'Role',
                     labelStyle: TextStyle(color: Colors.white, fontSize: 20),
