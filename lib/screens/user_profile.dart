@@ -144,7 +144,8 @@ class _UserProfileState extends State<UserProfile> {
                         trailing: IconButton(
                           icon: Icon(Icons.arrow_forward),
                           onPressed: () {
-                            Navigator.pushNamed(context, UserProfileUpdate.id)
+                            Navigator.pushNamed(context, UserProfileUpdate.id,
+                                    arguments: {"docId": "12345"})
                                 .then(onReturnToPage);
                           },
                         ),

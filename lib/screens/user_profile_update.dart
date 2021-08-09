@@ -7,6 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserProfileUpdate extends StatefulWidget {
   static const String id = 'user_profile_update';
 
+  // final String docId;
+  // UserProfileUpdate(this.docId);
+
   @override
   _UserProfileUpdateState createState() => _UserProfileUpdateState();
 }
@@ -70,6 +73,10 @@ class _UserProfileUpdateState extends State<UserProfileUpdate> {
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    print(args["docId"]);
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: BaseAppBar(
