@@ -72,6 +72,7 @@ class _UserProfileUpdateState extends State<UserProfileUpdate> {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments
         as QueryDocumentSnapshot<Map<String, dynamic>>;
+    docId = args.reference.id;
 
     return Scaffold(
       backgroundColor: Colors.black,
