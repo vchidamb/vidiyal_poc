@@ -25,6 +25,10 @@ class _UserProfileUpdateState extends State<UserProfileUpdate> {
 
   List<DropdownMenuItem<String>> _roles = [
     DropdownMenuItem(
+      child: Text(""),
+      value: "",
+    ),
+    DropdownMenuItem(
       child: Text("Admin"),
       value: "A",
     ),
@@ -72,6 +76,7 @@ class _UserProfileUpdateState extends State<UserProfileUpdate> {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments
         as QueryDocumentSnapshot<Map<String, dynamic>>;
+
     docId = args.reference.id;
 
     return Scaffold(
@@ -118,6 +123,7 @@ class _UserProfileUpdateState extends State<UserProfileUpdate> {
                     }),
                 DropdownButtonFormField(
                   value: args["role"],
+                  dropdownColor: Colors.black,
                   style: TextStyle(color: Colors.white, fontSize: 20),
                   decoration: InputDecoration(
                     labelText: 'Role',

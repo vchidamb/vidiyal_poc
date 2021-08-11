@@ -104,7 +104,8 @@ class _UserProfileAddState extends State<UserProfileAdd> {
                       email = value.toString();
                     }),
                 DropdownButtonFormField(
-                  style: TextStyle(color: Colors.black, fontSize: 20),
+                  dropdownColor: Colors.black,
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                   decoration: InputDecoration(
                     labelText: 'Role',
                     labelStyle: TextStyle(color: Colors.white, fontSize: 20),
