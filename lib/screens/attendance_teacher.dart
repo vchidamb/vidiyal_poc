@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:vidiyal_login/components/app_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vidiyal_login/screens/user_profile_add.dart';
-import 'package:vidiyal_login/screens/user_profile_update.dart';
+import 'package:vidiyal_login/screens/attendance_class.dart';
 
-class UserProfile extends StatefulWidget {
-  static const String id = 'user_profile';
+class AttendanceTeacher extends StatefulWidget {
+  static const String id = 'attendance_teacher';
 
   @override
-  _UserProfileState createState() => _UserProfileState();
+  _AttendanceTeacherState createState() => _AttendanceTeacherState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _AttendanceTeacherState extends State<AttendanceTeacher> {
   TextEditingController _searchController = TextEditingController();
   List _allDocs = [];
   List _filteredDocs = [];
@@ -59,7 +58,7 @@ class _UserProfileState extends State<UserProfile> {
 
   _getDocsFromDatabase() async {
     var data = await FirebaseFirestore.instance
-        .collection('user_profile')
+        .collection('teacher')
         .orderBy('name')
         .get();
 
@@ -71,10 +70,6 @@ class _UserProfileState extends State<UserProfile> {
     return "complete";
   }
 
-  updateUserList(dynamic value) {
-    _getDocsFromDatabase();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +77,7 @@ class _UserProfileState extends State<UserProfile> {
       appBar: BaseAppBar(
         appBar: AppBar(),
         leading: BackButton(),
-        title: Text('User Profile'),
+        title: Text('Select Teacher'),
         actions: ['Home', 'Logout'],
       ),
       body: SafeArea(
@@ -108,17 +103,6 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.add,
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, UserProfileAdd.id)
-                        .then(updateUserList);
-                  },
-                )
               ],
             ),
             SizedBox(
@@ -144,9 +128,9 @@ class _UserProfileState extends State<UserProfile> {
                         trailing: IconButton(
                           icon: Icon(Icons.arrow_forward),
                           onPressed: () {
-                            Navigator.pushNamed(context, UserProfileUpdate.id,
-                                    arguments: _filteredDocs[index])
-                                .then(updateUserList);
+                            List<String> args = [_filteredDocs[index].id];
+                            Navigator.pushNamed(context, AttendanceClass.id,
+                                arguments: args);
                           },
                         ),
                       ),

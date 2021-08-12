@@ -79,7 +79,7 @@ class _LoginState extends State<Login> {
                   height: 8,
                 ),
                 RoundedButton(
-                  title: 'Log In',
+                  title: 'LOGIN',
                   color: Color(0xFF43C5EF),
                   onPressed: () async {
                     setState(() {

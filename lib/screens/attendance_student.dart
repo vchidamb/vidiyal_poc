@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:vidiyal_login/components/app_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vidiyal_login/screens/user_profile_add.dart';
-import 'package:vidiyal_login/screens/user_profile_update.dart';
 
-class UserProfile extends StatefulWidget {
-  static const String id = 'user_profile';
+class AttendanceStudent extends StatefulWidget {
+  static const String id = 'attendance_student';
 
   @override
-  _UserProfileState createState() => _UserProfileState();
+  _AttendanceStudentState createState() => _AttendanceStudentState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _AttendanceStudentState extends State<AttendanceStudent> {
   TextEditingController _searchController = TextEditingController();
   List _allDocs = [];
   List _filteredDocs = [];
+
+  String teacherDocId = "", classDocId = "";
 
   @override
   void initState() {
@@ -40,11 +40,9 @@ class _UserProfileState extends State<UserProfile> {
 
     if (_searchController.text != "") {
       for (var document in _allDocs) {
-        var email = document["email"].toString().toLowerCase();
-        var name = document["name"].toString().toLowerCase();
+        var name = document["grade"].toString().toLowerCase();
 
-        if (email.contains(_searchController.text.toLowerCase()) ||
-            name.contains(_searchController.text.toLowerCase())) {
+        if (name.contains(_searchController.text.toLowerCase())) {
           showDocs.add(document);
         }
       }
@@ -58,9 +56,16 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   _getDocsFromDatabase() async {
+    final docId = ModalRoute.of(context)!.settings.arguments as List<String>;
+    teacherDocId = docId[0];
+    classDocId = docId[1];
+
     var data = await FirebaseFirestore.instance
-        .collection('user_profile')
-        .orderBy('name')
+        .collection('teacher')
+        .doc(teacherDocId)
+        .collection('class')
+        .doc(classDocId)
+        .collection('class_student')
         .get();
 
     setState(() {
@@ -71,10 +76,6 @@ class _UserProfileState extends State<UserProfile> {
     return "complete";
   }
 
-  updateUserList(dynamic value) {
-    _getDocsFromDatabase();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +83,7 @@ class _UserProfileState extends State<UserProfile> {
       appBar: BaseAppBar(
         appBar: AppBar(),
         leading: BackButton(),
-        title: Text('User Profile'),
+        title: Text('Select Student'),
         actions: ['Home', 'Logout'],
       ),
       body: SafeArea(
@@ -108,17 +109,6 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.add,
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, UserProfileAdd.id)
-                        .then(updateUserList);
-                  },
-                )
               ],
             ),
             SizedBox(
@@ -134,20 +124,12 @@ class _UserProfileState extends State<UserProfile> {
                       // color: Color(0xFF44C5EF),
                       child: new ListTile(
                         title: new Text(
-                          _filteredDocs[index]['name'],
-                          // style: TextStyle(color: Color(0xFFffd54f)),
-                        ),
-                        subtitle: new Text(
-                          _filteredDocs[index]['email'],
+                          _filteredDocs[index]['grade'],
                           // style: TextStyle(color: Color(0xFFffd54f)),
                         ),
                         trailing: IconButton(
                           icon: Icon(Icons.arrow_forward),
-                          onPressed: () {
-                            Navigator.pushNamed(context, UserProfileUpdate.id,
-                                    arguments: _filteredDocs[index])
-                                .then(updateUserList);
-                          },
+                          onPressed: () {},
                         ),
                       ),
                     );

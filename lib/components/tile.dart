@@ -13,7 +13,7 @@ class Tile extends StatelessWidget {
     return GestureDetector(
       onTap: onTapped,
       child: Card(
-        color: Color(0xFF44C5EF),
+        // color: Color(0xFF44C5EF),
         margin: EdgeInsets.symmetric(
           vertical: 8,
           horizontal: 8,
@@ -26,7 +26,7 @@ class Tile extends StatelessWidget {
           children: [
             FaIcon(
               icon,
-              color: Colors.white,
+              // color: Color(0xFF4dd0e1),
               size: 60,
             ),
             SizedBox(
@@ -36,7 +36,7 @@ class Tile extends StatelessWidget {
               title,
               style: TextStyle(
                 fontSize: 15,
-                color: Colors.white,
+                // color: Color(0xFF4dd0e1),
               ),
             ),
           ],

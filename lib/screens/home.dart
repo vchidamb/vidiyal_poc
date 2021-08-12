@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vidiyal_login/components/tile.dart';
 import 'package:vidiyal_login/components/app_bar.dart';
+import 'package:vidiyal_login/screens/attendance_teacher.dart';
 import 'package:vidiyal_login/screens/user_profile.dart';
 
 class Home extends StatefulWidget {
@@ -35,18 +36,20 @@ class _HomeState extends State<Home> {
               Tile(
                 title: 'Attendance',
                 icon: FontAwesomeIcons.tasks,
-                onTapped: () {},
+                onTapped: () {
+                  Navigator.pushNamed(context, AttendanceTeacher.id);
+                },
               ),
-              Tile(
-                title: 'Class',
-                icon: FontAwesomeIcons.chalkboard,
-                onTapped: () {},
-              ),
-              Tile(
-                title: 'Payment',
-                icon: FontAwesomeIcons.fileInvoiceDollar,
-                onTapped: () {},
-              ),
+              // Tile(
+              //   title: 'Class',
+              //   icon: FontAwesomeIcons.chalkboard,
+              //   onTapped: () {},
+              // ),
+              // Tile(
+              //   title: 'Payment',
+              //   icon: FontAwesomeIcons.fileInvoiceDollar,
+              //   onTapped: () {},
+              // ),
               Tile(
                 title: 'Student',
                 icon: FontAwesomeIcons.userGraduate,

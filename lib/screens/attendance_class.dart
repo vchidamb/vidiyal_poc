@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:vidiyal_login/components/app_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vidiyal_login/screens/user_profile_add.dart';
-import 'package:vidiyal_login/screens/user_profile_update.dart';
+import 'package:vidiyal_login/screens/attendance_student.dart';
 
-class UserProfile extends StatefulWidget {
-  static const String id = 'user_profile';
+class AttendanceClass extends StatefulWidget {
+  static const String id = 'attendance_class';
 
   @override
-  _UserProfileState createState() => _UserProfileState();
+  _AttendanceClassState createState() => _AttendanceClassState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _AttendanceClassState extends State<AttendanceClass> {
   TextEditingController _searchController = TextEditingController();
   List _allDocs = [];
   List _filteredDocs = [];
+
+  String teacherDocId = "";
 
   @override
   void initState() {
@@ -40,11 +41,9 @@ class _UserProfileState extends State<UserProfile> {
 
     if (_searchController.text != "") {
       for (var document in _allDocs) {
-        var email = document["email"].toString().toLowerCase();
         var name = document["name"].toString().toLowerCase();
 
-        if (email.contains(_searchController.text.toLowerCase()) ||
-            name.contains(_searchController.text.toLowerCase())) {
+        if (name.contains(_searchController.text.toLowerCase())) {
           showDocs.add(document);
         }
       }
@@ -58,8 +57,17 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   _getDocsFromDatabase() async {
+    // final args = ModalRoute.of(context)!.settings.arguments
+    //     as QueryDocumentSnapshot<Map<String, dynamic>>;
+    // teacherDocId = args.reference.id;
+
+    final docId = ModalRoute.of(context)!.settings.arguments as List<String>;
+    teacherDocId = docId[0];
+
     var data = await FirebaseFirestore.instance
-        .collection('user_profile')
+        .collection('teacher')
+        .doc(teacherDocId)
+        .collection('class')
         .orderBy('name')
         .get();
 
@@ -71,10 +79,6 @@ class _UserProfileState extends State<UserProfile> {
     return "complete";
   }
 
-  updateUserList(dynamic value) {
-    _getDocsFromDatabase();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +86,7 @@ class _UserProfileState extends State<UserProfile> {
       appBar: BaseAppBar(
         appBar: AppBar(),
         leading: BackButton(),
-        title: Text('User Profile'),
+        title: Text('Select Class'),
         actions: ['Home', 'Logout'],
       ),
       body: SafeArea(
@@ -108,17 +112,6 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.add,
-                    size: 30,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, UserProfileAdd.id)
-                        .then(updateUserList);
-                  },
-                )
               ],
             ),
             SizedBox(
@@ -137,16 +130,15 @@ class _UserProfileState extends State<UserProfile> {
                           _filteredDocs[index]['name'],
                           // style: TextStyle(color: Color(0xFFffd54f)),
                         ),
-                        subtitle: new Text(
-                          _filteredDocs[index]['email'],
-                          // style: TextStyle(color: Color(0xFFffd54f)),
-                        ),
                         trailing: IconButton(
                           icon: Icon(Icons.arrow_forward),
                           onPressed: () {
-                            Navigator.pushNamed(context, UserProfileUpdate.id,
-                                    arguments: _filteredDocs[index])
-                                .then(updateUserList);
+                            List<String> args = [
+                              teacherDocId,
+                              _filteredDocs[index].id
+                            ];
+                            Navigator.pushNamed(context, AttendanceStudent.id,
+                                arguments: args);
                           },
                         ),
                       ),
