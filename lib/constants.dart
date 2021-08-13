@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+final kToday = DateTime.now();
+final kFirstDay =
+    DateTime(kToday.year, kToday.month - 1, 1); // First day of previous month
+final kLastDay = DateTime(
+    kToday.year, kToday.month, kToday.day); // Last day of current month
+// final kLastDay = DateTime(kToday.year, kToday.month + 1, 0); // Last day of current month
+
 const kTextFieldDecoration = InputDecoration(
   hintText: 'Enter a value',
   hintStyle: TextStyle(color: Colors.grey),

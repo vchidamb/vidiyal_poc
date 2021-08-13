@@ -6,6 +6,7 @@ import 'package:vidiyal_login/screens/home.dart';
 import 'package:vidiyal_login/screens/user_profile.dart';
 import 'package:vidiyal_login/screens/user_profile_add.dart';
 import 'package:vidiyal_login/screens/user_profile_update.dart';
+import 'package:vidiyal_login/screens/attendance.dart';
 import 'package:vidiyal_login/screens/attendance_teacher.dart';
 import 'package:vidiyal_login/screens/attendance_class.dart';
 import 'package:vidiyal_login/screens/attendance_student.dart';
@@ -34,6 +35,7 @@ class VidiyalApp extends StatelessWidget {
         UserProfile.id: (context) => UserProfile(),
         UserProfileAdd.id: (context) => UserProfileAdd(),
         UserProfileUpdate.id: (context) => UserProfileUpdate(),
+        Attendance.id: (context) => Attendance(),
         AttendanceTeacher.id: (context) => AttendanceTeacher(),
         AttendanceClass.id: (context) => AttendanceClass(),
         AttendanceStudent.id: (context) => AttendanceStudent(),
