@@ -40,7 +40,7 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
 
     if (_searchController.text != "") {
       for (var document in _allDocs) {
-        var name = document["grade"].toString().toLowerCase();
+        var name = document["name"].toString().toLowerCase();
 
         if (name.contains(_searchController.text.toLowerCase())) {
           showDocs.add(document);
@@ -68,9 +68,18 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
         .collection('class_student')
         .get();
 
+    List<DocumentSnapshot> studentDocs = [];
+    for (var doc in data.docs) {
+      var studentDoc = await FirebaseFirestore.instance
+          .collection('student')
+          .doc(doc["student_doc_id"])
+          .get();
+      studentDocs.add(studentDoc);
+    }
+
     setState(() {
-      _allDocs = data.docs;
-      _filteredDocs = data.docs;
+      _allDocs = studentDocs;
+      _filteredDocs = studentDocs;
     });
 
     return "complete";
@@ -124,7 +133,7 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
                       // color: Color(0xFF44C5EF),
                       child: new ListTile(
                         title: new Text(
-                          _filteredDocs[index]['grade'],
+                          _filteredDocs[index]['name'],
                           // style: TextStyle(color: Color(0xFFffd54f)),
                         ),
                         trailing: IconButton(

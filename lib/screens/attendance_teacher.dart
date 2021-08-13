@@ -121,10 +121,6 @@ class _AttendanceTeacherState extends State<AttendanceTeacher> {
                           _filteredDocs[index]['name'],
                           // style: TextStyle(color: Color(0xFFffd54f)),
                         ),
-                        subtitle: new Text(
-                          _filteredDocs[index]['email'],
-                          // style: TextStyle(color: Color(0xFFffd54f)),
-                        ),
                         trailing: IconButton(
                           icon: Icon(Icons.arrow_forward),
                           onPressed: () {
