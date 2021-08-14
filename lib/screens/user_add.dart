@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vidiyal_login/components/app_bar.dart';
-import 'package:vidiyal_login/screens/user_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserProfileAdd extends StatefulWidget {
-  static const String id = 'user_profile_add';
+class UserAdd extends StatefulWidget {
+  static const String id = 'user_add';
 
   @override
-  _UserProfileAddState createState() => _UserProfileAddState();
+  _UserAddState createState() => _UserAddState();
 }
 
-class _UserProfileAddState extends State<UserProfileAdd> {
+class _UserAddState extends State<UserAdd> {
   GlobalKey<FormState> _formKey = GlobalKey();
   final dropdownState = GlobalKey<FormFieldState>();
 
@@ -38,10 +36,10 @@ class _UserProfileAddState extends State<UserProfileAdd> {
 
       FirebaseFirestore.instance
           .runTransaction((Transaction transaction) async {
-        CollectionReference userProfile =
-            FirebaseFirestore.instance.collection('user_profile');
+        CollectionReference user =
+            FirebaseFirestore.instance.collection('user');
 
-        var result = await userProfile.add(
+        var result = await user.add(
           {
             "email": "$email",
             "name": "$name",
@@ -68,7 +66,7 @@ class _UserProfileAddState extends State<UserProfileAdd> {
       appBar: BaseAppBar(
         appBar: AppBar(),
         leading: BackButton(),
-        title: Text('Add User Profile'),
+        title: Text('Add User'),
         actions: ['Home', 'Logout'],
       ),
       body: SingleChildScrollView(

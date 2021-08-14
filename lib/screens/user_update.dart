@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vidiyal_login/components/app_bar.dart';
-import 'package:vidiyal_login/screens/user_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserProfileUpdate extends StatefulWidget {
-  static const String id = 'user_profile_update';
+class UserUpdate extends StatefulWidget {
+  static const String id = 'user_update';
 
   @override
-  _UserProfileUpdateState createState() => _UserProfileUpdateState();
+  _UserUpdateState createState() => _UserUpdateState();
 }
 
-class _UserProfileUpdateState extends State<UserProfileUpdate> {
+class _UserUpdateState extends State<UserUpdate> {
   GlobalKey<FormState> _formKey = GlobalKey();
   final dropdownState = GlobalKey<FormFieldState>();
 
@@ -47,10 +45,10 @@ class _UserProfileUpdateState extends State<UserProfileUpdate> {
 
       FirebaseFirestore.instance
           .runTransaction((Transaction transaction) async {
-        CollectionReference userProfile =
-            FirebaseFirestore.instance.collection('user_profile');
+        CollectionReference user =
+            FirebaseFirestore.instance.collection('user');
 
-        DocumentReference docRef = userProfile.doc(docId);
+        DocumentReference docRef = user.doc(docId);
 
         var result = await docRef.update(
           {
@@ -84,7 +82,7 @@ class _UserProfileUpdateState extends State<UserProfileUpdate> {
       appBar: BaseAppBar(
         appBar: AppBar(),
         leading: BackButton(),
-        title: Text('Update User Profile'),
+        title: Text('Update User'),
         actions: ['Home', 'Logout'],
       ),
       body: SingleChildScrollView(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vidiyal_login/components/app_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:vidiyal_login/screens/attendance.dart';
 
 class AttendanceStudent extends StatefulWidget {
   static const String id = 'attendance_student';
@@ -56,6 +57,8 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
   }
 
   _getDocsFromDatabase() async {
+    List<Map<String, dynamic>> studentMaps = [];
+
     final docId = ModalRoute.of(context)!.settings.arguments as List<String>;
     teacherDocId = docId[0];
     classDocId = docId[1];
@@ -68,18 +71,17 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
         .collection('class_student')
         .get();
 
-    List<DocumentSnapshot> studentDocs = [];
     for (var doc in data.docs) {
-      var studentDoc = await FirebaseFirestore.instance
-          .collection('student')
-          .doc(doc["student_doc_id"])
-          .get();
-      studentDocs.add(studentDoc);
+      DocumentSnapshot studentDoc = await doc["student_doc_id"].get();
+      Map<String, dynamic> studentMap =
+          studentDoc.data() as Map<String, dynamic>;
+      studentMap['class_student_doc_id'] = doc.reference.id;
+      studentMaps.add(studentMap);
     }
 
     setState(() {
-      _allDocs = studentDocs;
-      _filteredDocs = studentDocs;
+      _allDocs = studentMaps;
+      _filteredDocs = studentMaps;
     });
 
     return "complete";
@@ -138,7 +140,15 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
                         ),
                         trailing: IconButton(
                           icon: Icon(Icons.arrow_forward),
-                          onPressed: () {},
+                          onPressed: () {
+                            List<String> args = [
+                              teacherDocId,
+                              classDocId,
+                              _filteredDocs[index]['class_student_doc_id']
+                            ];
+                            Navigator.pushNamed(context, Attendance.id,
+                                arguments: args);
+                          },
                         ),
                       ),
                     );

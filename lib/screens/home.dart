@@ -4,7 +4,7 @@ import 'package:vidiyal_login/components/tile.dart';
 import 'package:vidiyal_login/components/app_bar.dart';
 import 'package:vidiyal_login/screens/attendance.dart';
 import 'package:vidiyal_login/screens/attendance_teacher.dart';
-import 'package:vidiyal_login/screens/user_profile.dart';
+import 'package:vidiyal_login/screens/user.dart';
 
 class Home extends StatefulWidget {
   static const String id = 'home';
@@ -64,10 +64,10 @@ class _HomeState extends State<Home> {
                 onTapped: () {},
               ),
               Tile(
-                title: 'User Profile',
+                title: 'User',
                 icon: FontAwesomeIcons.users,
                 onTapped: () {
-                  Navigator.pushNamed(context, UserProfile.id);
+                  Navigator.pushNamed(context, User.id);
                 },
               ),
             ]),

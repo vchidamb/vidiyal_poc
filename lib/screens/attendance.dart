@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:vidiyal_login/components/app_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -22,16 +21,64 @@ class _AttendanceState extends State<Attendance> {
 
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = kFirstDay;
+  String teacherDocId = "", classDocId = "", classStudentDocId = "";
+  CollectionReference attendanceReference =
+      FirebaseFirestore.instance.collection('teacher');
 
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    setState(() {
-      _focusedDay = focusedDay;
-      if (_selectedDays.contains(selectedDay)) {
-        _selectedDays.remove(selectedDay);
-      } else {
-        _selectedDays.add(selectedDay);
-      }
-    });
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Future resultsLoaded = _getDates();
+  }
+
+  _getDates() async {
+    final docId = ModalRoute.of(context)!.settings.arguments as List<String>;
+    teacherDocId = docId[0];
+    classDocId = docId[1];
+    classStudentDocId = docId[2];
+    attendanceReference = FirebaseFirestore.instance
+        .collection('teacher')
+        .doc(teacherDocId)
+        .collection('class')
+        .doc(classDocId)
+        .collection('class_student')
+        .doc(classStudentDocId)
+        .collection('attendance');
+
+    var data = await attendanceReference
+        .where('class_date', isGreaterThanOrEqualTo: kFirstDay)
+        .where('class_date', isLessThanOrEqualTo: kLastDay)
+        .get();
+
+    for (var doc in data.docs) {
+      _selectedDays.add((doc['class_date']).toDate().toUtc());
+    }
+
+    setState(() {});
+    return "complete";
+  }
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) async {
+    _focusedDay = focusedDay;
+
+    if (_selectedDays.contains(selectedDay)) {
+      _selectedDays.remove(selectedDay);
+
+      var data = await attendanceReference
+          .where('class_date', isEqualTo: selectedDay.toUtc())
+          .get()
+          .then((snapshot) {
+        for (DocumentSnapshot ds in snapshot.docs) {
+          ds.reference.delete();
+        }
+      });
+    } else {
+      _selectedDays.add(selectedDay);
+      var data =
+          await attendanceReference.add({'class_date': selectedDay.toUtc()});
+    }
+
+    setState(() {});
   }
 
   @override
@@ -52,8 +99,22 @@ class _AttendanceState extends State<Attendance> {
             focusedDay: _focusedDay,
             calendarFormat: _calendarFormat,
             startingDayOfWeek: StartingDayOfWeek.sunday,
+            calendarStyle: CalendarStyle(
+              isTodayHighlighted: false,
+              selectedTextStyle: TextStyle(color: Colors.white),
+              weekendTextStyle: TextStyle(color: Colors.white),
+              disabledTextStyle: TextStyle(color: Colors.grey[700]),
+            ),
+            daysOfWeekStyle: DaysOfWeekStyle(
+              weekdayStyle: TextStyle(color: Colors.blue),
+              weekendStyle: TextStyle(color: Colors.blue),
+            ),
+            headerStyle: HeaderStyle(
+              formatButtonVisible: false,
+              titleCentered: true,
+              titleTextStyle: TextStyle(color: Colors.blue),
+            ),
             selectedDayPredicate: (day) {
-              // Use values from Set to mark multiple days as selected
               return _selectedDays.contains(day);
             },
             onDaySelected: _onDaySelected,
@@ -66,14 +127,6 @@ class _AttendanceState extends State<Attendance> {
             },
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
-            },
-          ),
-          ElevatedButton(
-            child: Text('Clear selection'),
-            onPressed: () {
-              setState(() {
-                _selectedDays.clear();
-              });
             },
           ),
         ],
