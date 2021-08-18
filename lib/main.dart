@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 import 'package:vidiyal_login/screens/register.dart';
 import 'package:vidiyal_login/screens/login.dart';
+import 'package:vidiyal_login/screens/reset_password.dart';
 import 'package:vidiyal_login/screens/home.dart';
 import 'package:vidiyal_login/screens/user.dart';
 import 'package:vidiyal_login/screens/user_add.dart';
@@ -25,12 +27,13 @@ class VidiyalApp extends StatelessWidget {
         brightness: Brightness.dark,
         primaryColor: Color(0xFF424242),
         accentColor: Color(0xFFffd54f),
-        // fontFamily: '',
+        fontFamily: 'Nunito',
       ),
       initialRoute: Login.id,
       routes: {
         Register.id: (context) => Register(),
         Login.id: (context) => Login(),
+        ResetPassword.id: (context) => ResetPassword(),
         Home.id: (context) => Home(),
         User.id: (context) => User(),
         UserAdd.id: (context) => UserAdd(),

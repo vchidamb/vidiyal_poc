@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vidiyal_login/constants.dart';
 
 class Tile extends StatelessWidget {
-  Tile({required this.title, required this.icon, required this.onTapped});
-
   final String title;
   final IconData icon;
   final VoidCallback onTapped;
+
+  Tile({
+    required this.title,
+    required this.icon,
+    required this.onTapped,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTapped,
       child: Card(
-        // color: Color(0xFF44C5EF),
+        color: Colors.cyan,
         margin: EdgeInsets.symmetric(
           vertical: 8,
           horizontal: 8,
@@ -26,7 +31,7 @@ class Tile extends StatelessWidget {
           children: [
             FaIcon(
               icon,
-              // color: Color(0xFF4dd0e1),
+              color: Colors.white,
               size: 60,
             ),
             SizedBox(
@@ -36,7 +41,7 @@ class Tile extends StatelessWidget {
               title,
               style: TextStyle(
                 fontSize: 15,
-                // color: Color(0xFF4dd0e1),
+                color: Colors.white,
               ),
             ),
           ],

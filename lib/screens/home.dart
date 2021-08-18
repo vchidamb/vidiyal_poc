@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:vidiyal_login/components/tile.dart';
-import 'package:vidiyal_login/components/app_bar.dart';
-import 'package:vidiyal_login/screens/attendance.dart';
+import 'package:vidiyal_login/widgets/tile.dart';
+import 'package:vidiyal_login/widgets/app_bar.dart';
 import 'package:vidiyal_login/screens/attendance_teacher.dart';
 import 'package:vidiyal_login/screens/user.dart';
 
@@ -54,9 +53,7 @@ class _HomeState extends State<Home> {
               Tile(
                 title: 'Student',
                 icon: FontAwesomeIcons.userGraduate,
-                onTapped: () {
-                  Navigator.pushNamed(context, Attendance.id);
-                },
+                onTapped: () {},
               ),
               Tile(
                 title: 'Teacher',

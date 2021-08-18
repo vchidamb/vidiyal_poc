@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vidiyal_login/components/app_bar.dart';
+import 'package:vidiyal_login/widgets/app_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserAdd extends StatefulWidget {

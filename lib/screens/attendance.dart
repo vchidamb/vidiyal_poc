@@ -1,6 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'package:vidiyal_login/components/app_bar.dart';
+import 'package:vidiyal_login/widgets/app_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:vidiyal_login/constants.dart';
 import 'package:vidiyal_login/utils.dart';
@@ -43,7 +43,7 @@ class _AttendanceState extends State<Attendance> {
         .doc(classDocId)
         .collection('class_student')
         .doc(classStudentDocId)
-        .collection('attendance');
+        .collection('class_attendance');
 
     var data = await attendanceReference
         .where('class_date', isGreaterThanOrEqualTo: kFirstDay)
@@ -64,7 +64,7 @@ class _AttendanceState extends State<Attendance> {
     if (_selectedDays.contains(selectedDay)) {
       _selectedDays.remove(selectedDay);
 
-      var data = await attendanceReference
+      await attendanceReference
           .where('class_date', isEqualTo: selectedDay.toUtc())
           .get()
           .then((snapshot) {
@@ -74,8 +74,7 @@ class _AttendanceState extends State<Attendance> {
       });
     } else {
       _selectedDays.add(selectedDay);
-      var data =
-          await attendanceReference.add({'class_date': selectedDay.toUtc()});
+      await attendanceReference.add({'class_date': selectedDay.toUtc()});
     }
 
     setState(() {});

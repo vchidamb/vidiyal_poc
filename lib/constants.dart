@@ -7,6 +7,8 @@ final kLastDay = DateTime(
     kToday.year, kToday.month, kToday.day); // Last day of current month
 // final kLastDay = DateTime(kToday.year, kToday.month + 1, 0); // Last day of current month
 
+const LogoBlue = Color(0xFF44C5EF);
+
 const kTextFieldDecoration = InputDecoration(
   hintText: 'Enter a value',
   hintStyle: TextStyle(color: Colors.grey),

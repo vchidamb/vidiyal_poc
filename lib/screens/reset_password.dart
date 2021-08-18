@@ -4,33 +4,23 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import 'package:vidiyal_login/widgets/push_button.dart';
 import 'package:vidiyal_login/widgets/link_button.dart';
-import 'package:vidiyal_login/widgets/message_box.dart';
 import 'package:vidiyal_login/widgets/login_textformfield.dart';
-import 'package:vidiyal_login/screens/register.dart';
-import 'package:vidiyal_login/screens/reset_password.dart';
-import 'package:vidiyal_login/screens/home.dart';
+import 'package:vidiyal_login/widgets/message_box.dart';
+import 'package:vidiyal_login/screens/login.dart';
 
-class Login extends StatefulWidget {
-  static const String id = 'login';
+class ResetPassword extends StatefulWidget {
+  static const String id = 'reset_password';
 
   @override
-  _LoginState createState() => _LoginState();
+  _ResetPasswordState createState() => _ResetPasswordState();
 }
 
-class _LoginState extends State<Login> {
+class _ResetPasswordState extends State<ResetPassword> {
   final _auth = FirebaseAuth.instance;
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
 
   GlobalKey<FormState> _formKey = GlobalKey();
-  String _email = '', _password = '';
+  String _email = '';
   bool _showSpinner = false;
-
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
@@ -42,19 +32,23 @@ class _LoginState extends State<Login> {
       });
 
       try {
-        await _auth.signInWithEmailAndPassword(
+        await _auth.sendPasswordResetEmail(
           email: _email,
-          password: _password,
         );
-
-        _emailController.clear();
-        _passwordController.clear();
 
         setState(() {
           _showSpinner = false;
         });
 
-        Navigator.pushNamed(context, Home.id);
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return MessageBox(
+                title: 'Password Reset',
+                content:
+                    'An email has been sent with link to reset the password.',
+              );
+            });
       } on FirebaseAuthException catch (ex) {
         setState(() {
           _showSpinner = false;
@@ -64,7 +58,7 @@ class _LoginState extends State<Login> {
           context: context,
           builder: (BuildContext context) {
             return MessageBox(
-              title: 'Login Error',
+              title: 'Reset Error',
               content: ex.message.toString(),
             );
           },
@@ -96,7 +90,6 @@ class _LoginState extends State<Login> {
                   LoginTextFormField(
                     hintText: 'Email',
                     keyboardType: TextInputType.emailAddress,
-                    textEditingController: _emailController,
                     onSaved: (value) {
                       _email = value.toString();
                     },
@@ -104,40 +97,16 @@ class _LoginState extends State<Login> {
                   SizedBox(
                     height: 8,
                   ),
-                  LoginTextFormField(
-                    hintText: 'Password',
-                    obscureText: true,
-                    textEditingController: _passwordController,
-                    onSaved: (value) {
-                      _password = value.toString();
-                    },
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
                   PushButton(
-                    title: 'LOGIN',
+                    title: 'RESET PASSWORD',
                     onPressed: _submitForm,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      LinkButton(
-                        title: 'Register',
-                        onPressed: () {
-                          Navigator.pushNamed(context, Register.id);
-                        },
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      LinkButton(
-                        title: 'Reset Password',
-                        onPressed: () {
-                          Navigator.pushNamed(context, ResetPassword.id);
-                        },
-                      ),
-                    ],
+                  LinkButton(
+                    title: 'Login',
+                    onPressed: () {
+                      FocusManager.instance.primaryFocus!.unfocus();
+                      Navigator.pushNamed(context, Login.id);
+                    },
                   )
                 ],
               ),

@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:vidiyal_login/constants.dart';
 
-class RoundedButton extends StatelessWidget {
-  RoundedButton(
-      {required this.title, required this.color, required this.onPressed});
-
-  final Color color;
+class PushButton extends StatelessWidget {
   final String title;
   final VoidCallback onPressed;
+
+  PushButton({
+    required this.title,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      // padding: EdgeInsets.symmetric(vertical: 16.0),
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
       child: Material(
         elevation: 5,
-        color: color,
+        color: LogoBlue,
         borderRadius: BorderRadius.circular(30),
         child: MaterialButton(
           onPressed: onPressed,
@@ -24,7 +25,9 @@ class RoundedButton extends StatelessWidget {
           child: Text(
             title,
             style: TextStyle(
-              color: Colors.white70,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.5,
+              color: Colors.black,
             ),
           ),
         ),
