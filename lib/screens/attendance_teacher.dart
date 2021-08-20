@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vidiyal_login/widgets/app_bar.dart';
+import 'package:vidiyal_login/widgets/menu_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vidiyal_login/screens/attendance_class.dart';
 
@@ -31,7 +31,7 @@ class _AttendanceTeacherState extends State<AttendanceTeacher> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Future resultsLoaded = _getDocsFromDatabase();
+    _getDocsFromDatabase();
   }
 
   _searchFieldChange() {
@@ -59,6 +59,7 @@ class _AttendanceTeacherState extends State<AttendanceTeacher> {
   _getDocsFromDatabase() async {
     var data = await FirebaseFirestore.instance
         .collection('teacher')
+        .where('active', isEqualTo: 'Y')
         .orderBy('name')
         .get();
 
@@ -66,15 +67,13 @@ class _AttendanceTeacherState extends State<AttendanceTeacher> {
       _allDocs = data.docs;
       _filteredDocs = data.docs;
     });
-
-    return "complete";
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: BaseAppBar(
+      appBar: MenuBar(
         appBar: AppBar(),
         leading: BackButton(),
         title: Text('Select Teacher'),

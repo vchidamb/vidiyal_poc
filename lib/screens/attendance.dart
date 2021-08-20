@@ -1,6 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'package:vidiyal_login/widgets/app_bar.dart';
+import 'package:vidiyal_login/widgets/menu_bar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:vidiyal_login/constants.dart';
 import 'package:vidiyal_login/utils.dart';
@@ -28,10 +28,10 @@ class _AttendanceState extends State<Attendance> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Future resultsLoaded = _getDates();
+    _getDates();
   }
 
-  _getDates() async {
+  void _getDates() async {
     final docId = ModalRoute.of(context)!.settings.arguments as List<String>;
     teacherDocId = docId[0];
     classDocId = docId[1];
@@ -55,7 +55,6 @@ class _AttendanceState extends State<Attendance> {
     }
 
     setState(() {});
-    return "complete";
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) async {
@@ -84,7 +83,7 @@ class _AttendanceState extends State<Attendance> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: BaseAppBar(
+      appBar: MenuBar(
         appBar: AppBar(),
         leading: BackButton(),
         title: Text('Mark Attendance'),

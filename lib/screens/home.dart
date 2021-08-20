@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:vidiyal_login/widgets/tile.dart';
-import 'package:vidiyal_login/widgets/app_bar.dart';
+import 'package:vidiyal_login/widgets/menu_bar.dart';
 import 'package:vidiyal_login/screens/attendance_teacher.dart';
 import 'package:vidiyal_login/screens/user.dart';
 
@@ -17,11 +18,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: BaseAppBar(
+      appBar: MenuBar(
         appBar: AppBar(),
-        leading: new Container(),
         title: Text('Home'),
-        actions: ['Logout'],
+        centerTitle: true,
       ),
       body: SafeArea(
         child: GridView.count(

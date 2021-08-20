@@ -18,7 +18,7 @@ class Tile extends StatelessWidget {
     return GestureDetector(
       onTap: onTapped,
       child: Card(
-        color: Colors.cyan,
+        color: LogoBlue,
         margin: EdgeInsets.symmetric(
           vertical: 8,
           horizontal: 8,

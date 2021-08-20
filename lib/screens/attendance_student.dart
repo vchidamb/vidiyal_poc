@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vidiyal_login/widgets/app_bar.dart';
+import 'package:vidiyal_login/widgets/menu_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vidiyal_login/screens/attendance.dart';
 
@@ -33,7 +33,7 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Future resultsLoaded = _getDocsFromDatabase();
+    _getDocsFromDatabase();
   }
 
   _searchFieldChange() {
@@ -69,6 +69,7 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
         .collection('class')
         .doc(classDocId)
         .collection('class_student')
+        .where('active', isEqualTo: 'Y')
         .get();
 
     for (var doc in data.docs) {
@@ -83,15 +84,13 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
       _allDocs = studentMaps;
       _filteredDocs = studentMaps;
     });
-
-    return "complete";
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: BaseAppBar(
+      appBar: MenuBar(
         appBar: AppBar(),
         leading: BackButton(),
         title: Text('Select Student'),

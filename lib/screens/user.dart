@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vidiyal_login/widgets/app_bar.dart';
+import 'package:vidiyal_login/widgets/menu_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vidiyal_login/screens/user_add.dart';
 import 'package:vidiyal_login/screens/user_update.dart';
@@ -32,7 +32,7 @@ class _UserState extends State<User> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Future resultsLoaded = _getDocsFromDatabase();
+    _getDocsFromDatabase();
   }
 
   _searchFieldChange() {
@@ -67,8 +67,6 @@ class _UserState extends State<User> {
       _allDocs = data.docs;
       _filteredDocs = data.docs;
     });
-
-    return "complete";
   }
 
   updateUserList(dynamic value) {
@@ -79,7 +77,7 @@ class _UserState extends State<User> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: BaseAppBar(
+      appBar: MenuBar(
         appBar: AppBar(),
         leading: BackButton(),
         title: Text('User'),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vidiyal_login/widgets/app_bar.dart';
+import 'package:vidiyal_login/widgets/menu_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserUpdate extends StatefulWidget {
@@ -13,7 +13,6 @@ class _UserUpdateState extends State<UserUpdate> {
   GlobalKey<FormState> _formKey = GlobalKey();
   final dropdownState = GlobalKey<FormFieldState>();
 
-  bool _validate = false;
   String email = "",
       name = "",
       role = "",
@@ -50,7 +49,7 @@ class _UserUpdateState extends State<UserUpdate> {
 
         DocumentReference docRef = user.doc(docId);
 
-        var result = await docRef.update(
+        await docRef.update(
           {
             "email": "$email",
             "name": "$name",
@@ -64,9 +63,7 @@ class _UserUpdateState extends State<UserUpdate> {
       });
     } else {
       // validation error
-      setState(() {
-        _validate = true;
-      });
+      setState(() {});
     }
   }
 
@@ -79,7 +76,7 @@ class _UserUpdateState extends State<UserUpdate> {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: BaseAppBar(
+      appBar: MenuBar(
         appBar: AppBar(),
         leading: BackButton(),
         title: Text('Update User'),

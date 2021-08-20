@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
+import 'package:vidiyal_login/constants.dart';
 
 import 'package:vidiyal_login/screens/register.dart';
 import 'package:vidiyal_login/screens/login.dart';
@@ -25,8 +27,8 @@ class VidiyalApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         brightness: Brightness.dark,
-        primaryColor: Color(0xFF424242),
-        accentColor: Color(0xFFffd54f),
+        primaryColor: Colors.black,
+        accentColor: LogoBlue,
         fontFamily: 'Nunito',
       ),
       initialRoute: Login.id,
