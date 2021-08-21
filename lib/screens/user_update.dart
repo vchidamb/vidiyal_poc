@@ -80,7 +80,6 @@ class _UserUpdateState extends State<UserUpdate> {
         appBar: AppBar(),
         leading: BackButton(),
         title: Text('Update User'),
-        actions: ['Home', 'Logout'],
       ),
       body: SingleChildScrollView(
         child: Container(

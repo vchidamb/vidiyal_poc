@@ -64,7 +64,6 @@ class _UserAddState extends State<UserAdd> {
         appBar: AppBar(),
         leading: BackButton(),
         title: Text('Add User'),
-        actions: ['Home', 'Logout'],
       ),
       body: SingleChildScrollView(
         child: Container(

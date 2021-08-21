@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:vidiyal_login/widgets/menu_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:vidiyal_login/widgets/menu_bar.dart';
+import 'package:vidiyal_login/widgets/search_box.dart';
 import 'package:vidiyal_login/screens/attendance_student.dart';
 
 class AttendanceClass extends StatefulWidget {
@@ -86,32 +88,13 @@ class _AttendanceClassState extends State<AttendanceClass> {
         appBar: AppBar(),
         leading: BackButton(),
         title: Text('Select Class'),
-        actions: ['Home', 'Logout'],
       ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Column(children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      filled: true,
-                      fillColor: Colors.white70,
-                      hintText: "Search",
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(25.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            SearchBox(
+              searchController: _searchController,
             ),
             SizedBox(
               height: 8,

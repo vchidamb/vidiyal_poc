@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:vidiyal_login/widgets/menu_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vidiyal_login/screens/attendance_class.dart';
+
+import 'package:vidiyal_login/widgets/menu_bar.dart';
+import 'package:vidiyal_login/widgets/search_box.dart';
+import 'package:vidiyal_login/widgets/list_box.dart';
 
 class AttendanceTeacher extends StatefulWidget {
   static const String id = 'attendance_teacher';
@@ -31,32 +33,10 @@ class _AttendanceTeacherState extends State<AttendanceTeacher> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _getDocsFromDatabase();
+    _getTeachers();
   }
 
-  _searchFieldChange() {
-    List showDocs = [];
-
-    if (_searchController.text != "") {
-      for (var document in _allDocs) {
-        var email = document["email"].toString().toLowerCase();
-        var name = document["name"].toString().toLowerCase();
-
-        if (email.contains(_searchController.text.toLowerCase()) ||
-            name.contains(_searchController.text.toLowerCase())) {
-          showDocs.add(document);
-        }
-      }
-    } else {
-      showDocs = _allDocs;
-    }
-
-    setState(() {
-      _filteredDocs = showDocs;
-    });
-  }
-
-  _getDocsFromDatabase() async {
+  void _getTeachers() async {
     var data = await FirebaseFirestore.instance
         .collection('teacher')
         .where('active', isEqualTo: 'Y')
@@ -69,6 +49,29 @@ class _AttendanceTeacherState extends State<AttendanceTeacher> {
     });
   }
 
+  void _searchFieldChange() {
+    List searchResults = [];
+    String email, name;
+
+    if (_searchController.text != "") {
+      for (var doc in _allDocs) {
+        email = doc["email"].toString().toLowerCase();
+        name = doc["name"].toString().toLowerCase();
+
+        if (email.contains(_searchController.text.toLowerCase()) ||
+            name.contains(_searchController.text.toLowerCase())) {
+          searchResults.add(doc);
+        }
+      }
+    } else {
+      searchResults = _allDocs;
+    }
+
+    setState(() {
+      _filteredDocs = searchResults;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,60 +80,20 @@ class _AttendanceTeacherState extends State<AttendanceTeacher> {
         appBar: AppBar(),
         leading: BackButton(),
         title: Text('Select Teacher'),
-        actions: ['Home', 'Logout'],
       ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Column(children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      filled: true,
-                      fillColor: Colors.white70,
-                      hintText: "Search",
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(25.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            SearchBox(
+              searchController: _searchController,
             ),
             SizedBox(
               height: 8,
             ),
-            Expanded(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _filteredDocs.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      elevation: 20,
-                      // color: Color(0xFF44C5EF),
-                      child: new ListTile(
-                        title: new Text(
-                          _filteredDocs[index]['name'],
-                          // style: TextStyle(color: Color(0xFFffd54f)),
-                        ),
-                        trailing: IconButton(
-                          icon: Icon(Icons.arrow_forward),
-                          onPressed: () {
-                            List<String> args = [_filteredDocs[index].id];
-                            Navigator.pushNamed(context, AttendanceClass.id,
-                                arguments: args);
-                          },
-                        ),
-                      ),
-                    );
-                  }),
+            ListBox(
+              filteredDocs: _filteredDocs,
+              screenName: 'teacher',
             ),
           ]),
         ),

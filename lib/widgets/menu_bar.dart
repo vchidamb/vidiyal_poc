@@ -11,78 +11,42 @@ class MenuBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
   final Text title;
   final bool centerTitle;
-  final List<String> actions;
+  final bool includeHomeIcon;
 
   MenuBar({
     required this.appBar,
     this.leading,
     required this.title,
     this.centerTitle = false,
-    this.actions = const ['Logout'],
+    this.includeHomeIcon = true,
   });
 
   @override
   Widget build(BuildContext context) {
     final _auth = FirebaseAuth.instance;
     List<Widget> actionWidgets = <Widget>[];
-    String action;
 
-    // Widget homeIcon = Center(
-    //   child: Padding(
-    //     padding: const EdgeInsets.symmetric(horizontal: 5),
-    //     child: GestureDetector(
-    //       onTap: () {
-    //         Navigator.pushNamed(context, Home.id);
-    //       },
-    //       child: FaIcon(
-    //         FontAwesomeIcons.home,
-    //         color: Colors.cyan,
-    //       ),
-    //     ),
-    //   ),
-    // );
-    //
-    // Widget logoutIcon = Center(
-    //   child: Padding(
-    //     padding: const EdgeInsets.symmetric(horizontal: 16),
-    //     child: GestureDetector(
-    //       onTap: () {
-    //         _auth.signOut();
-    //         Navigator.popUntil(context, ModalRoute.withName(Login.id));
-    //       },
-    //       child: FaIcon(
-    //         FontAwesomeIcons.signOutAlt,
-    //         color: Colors.cyan,
-    //       ),
-    //     ),
-    //   ),
-    // );
-
-    for (action in actions) {
-      if (action == 'Home') {
-        actionWidgets.add(
-          MenuAction(
-            icon: FontAwesomeIcons.home,
-            onTap: () {
-              Navigator.pushNamed(context, Home.id);
-            },
-            padding: 5,
-          ),
-        );
-      }
-
-      if (action == 'Logout') {
-        actionWidgets.add(
-          MenuAction(
-              icon: FontAwesomeIcons.signOutAlt,
-              onTap: () {
-                _auth.signOut();
-                Navigator.popUntil(context, ModalRoute.withName(Login.id));
-              },
-              padding: 16),
-        );
-      }
+    if (includeHomeIcon == true) {
+      actionWidgets.add(
+        MenuAction(
+          icon: FontAwesomeIcons.home,
+          onTap: () {
+            Navigator.pushNamed(context, Home.id);
+          },
+          padding: 5,
+        ),
+      );
     }
+
+    actionWidgets.add(
+      MenuAction(
+          icon: FontAwesomeIcons.signOutAlt,
+          onTap: () {
+            _auth.signOut();
+            Navigator.popUntil(context, ModalRoute.withName(Login.id));
+          },
+          padding: 16),
+    );
 
     return AppBar(
       leading: leading,

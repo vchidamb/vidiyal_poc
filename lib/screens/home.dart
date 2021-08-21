@@ -22,6 +22,7 @@ class _HomeState extends State<Home> {
         appBar: AppBar(),
         title: Text('Home'),
         centerTitle: true,
+        includeHomeIcon: false,
       ),
       body: SafeArea(
         child: GridView.count(

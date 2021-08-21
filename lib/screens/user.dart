@@ -3,6 +3,7 @@ import 'package:vidiyal_login/widgets/menu_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vidiyal_login/screens/user_add.dart';
 import 'package:vidiyal_login/screens/user_update.dart';
+import 'package:vidiyal_login/widgets/search_box.dart';
 
 class User extends StatefulWidget {
   static const String id = 'user';
@@ -81,7 +82,6 @@ class _UserState extends State<User> {
         appBar: AppBar(),
         leading: BackButton(),
         title: Text('User'),
-        actions: ['Home', 'Logout'],
       ),
       body: SafeArea(
         child: Padding(

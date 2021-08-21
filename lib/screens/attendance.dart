@@ -87,7 +87,6 @@ class _AttendanceState extends State<Attendance> {
         appBar: AppBar(),
         leading: BackButton(),
         title: Text('Mark Attendance'),
-        actions: ['Home', 'Logout'],
       ),
       body: Column(
         children: [
