@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:vidiyal_login/widgets/menu_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vidiyal_login/screens/attendance.dart';
+
+import 'package:vidiyal_login/widgets/menu_bar.dart';
 import 'package:vidiyal_login/widgets/search_box.dart';
+import 'package:vidiyal_login/widgets/list_box.dart';
 
 class AttendanceStudent extends StatefulWidget {
   static const String id = 'attendance_student';
@@ -15,8 +16,7 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
   TextEditingController _searchController = TextEditingController();
   List _allDocs = [];
   List _filteredDocs = [];
-
-  String teacherDocId = "", classDocId = "";
+  String _teacherDocId = '', _classDocId = '';
 
   @override
   void initState() {
@@ -34,47 +34,27 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _getDocsFromDatabase();
+    _getStudents();
   }
 
-  _searchFieldChange() {
-    List showDocs = [];
+  void _getStudents() async {
+    final args = ModalRoute.of(context)!.settings.arguments as List<String>;
+    _teacherDocId = args[0];
+    _classDocId = args[1];
 
-    if (_searchController.text != "") {
-      for (var document in _allDocs) {
-        var name = document["name"].toString().toLowerCase();
-
-        if (name.contains(_searchController.text.toLowerCase())) {
-          showDocs.add(document);
-        }
-      }
-    } else {
-      showDocs = _allDocs;
-    }
-
-    setState(() {
-      _filteredDocs = showDocs;
-    });
-  }
-
-  _getDocsFromDatabase() async {
     List<Map<String, dynamic>> studentMaps = [];
-
-    final docId = ModalRoute.of(context)!.settings.arguments as List<String>;
-    teacherDocId = docId[0];
-    classDocId = docId[1];
 
     var data = await FirebaseFirestore.instance
         .collection('teacher')
-        .doc(teacherDocId)
+        .doc(_teacherDocId)
         .collection('class')
-        .doc(classDocId)
+        .doc(_classDocId)
         .collection('class_student')
         .where('active', isEqualTo: 'Y')
         .get();
 
     for (var doc in data.docs) {
-      DocumentSnapshot studentDoc = await doc["student_doc_id"].get();
+      DocumentSnapshot studentDoc = await doc['student_doc_id'].get();
       Map<String, dynamic> studentMap =
           studentDoc.data() as Map<String, dynamic>;
       studentMap['class_student_doc_id'] = doc.reference.id;
@@ -84,6 +64,27 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
     setState(() {
       _allDocs = studentMaps;
       _filteredDocs = studentMaps;
+    });
+  }
+
+  void _searchFieldChange() {
+    List searchResults = [];
+    String name;
+
+    if (_searchController.text != '') {
+      for (var doc in _allDocs) {
+        name = doc['name'].toString().toLowerCase();
+
+        if (name.contains(_searchController.text.toLowerCase())) {
+          searchResults.add(doc);
+        }
+      }
+    } else {
+      searchResults = _allDocs;
+    }
+
+    setState(() {
+      _filteredDocs = searchResults;
     });
   }
 
@@ -106,34 +107,11 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
             SizedBox(
               height: 8,
             ),
-            Expanded(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _filteredDocs.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      elevation: 20,
-                      // color: Color(0xFF44C5EF),
-                      child: new ListTile(
-                        title: new Text(
-                          _filteredDocs[index]['name'],
-                          // style: TextStyle(color: Color(0xFFffd54f)),
-                        ),
-                        trailing: IconButton(
-                          icon: Icon(Icons.arrow_forward),
-                          onPressed: () {
-                            List<String> args = [
-                              teacherDocId,
-                              classDocId,
-                              _filteredDocs[index]['class_student_doc_id']
-                            ];
-                            Navigator.pushNamed(context, Attendance.id,
-                                arguments: args);
-                          },
-                        ),
-                      ),
-                    );
-                  }),
+            ListBox(
+              screenName: 'student',
+              filteredDocs: _filteredDocs,
+              teacherDocId: _teacherDocId,
+              classDocId: _classDocId,
             ),
           ]),
         ),

@@ -37,13 +37,13 @@ class VidiyalApp extends StatelessWidget {
         Login.id: (context) => Login(),
         ResetPassword.id: (context) => ResetPassword(),
         Home.id: (context) => Home(),
-        User.id: (context) => User(),
-        UserAdd.id: (context) => UserAdd(),
-        UserUpdate.id: (context) => UserUpdate(),
         Attendance.id: (context) => Attendance(),
         AttendanceTeacher.id: (context) => AttendanceTeacher(),
         AttendanceClass.id: (context) => AttendanceClass(),
         AttendanceStudent.id: (context) => AttendanceStudent(),
+        User.id: (context) => User(),
+        UserAdd.id: (context) => UserAdd(),
+        UserUpdate.id: (context) => UserUpdate(),
       },
     );
   }

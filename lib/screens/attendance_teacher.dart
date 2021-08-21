@@ -51,15 +51,13 @@ class _AttendanceTeacherState extends State<AttendanceTeacher> {
 
   void _searchFieldChange() {
     List searchResults = [];
-    String email, name;
+    String name;
 
-    if (_searchController.text != "") {
+    if (_searchController.text != '') {
       for (var doc in _allDocs) {
-        email = doc["email"].toString().toLowerCase();
-        name = doc["name"].toString().toLowerCase();
+        name = doc['name'].toString().toLowerCase();
 
-        if (email.contains(_searchController.text.toLowerCase()) ||
-            name.contains(_searchController.text.toLowerCase())) {
+        if (name.contains(_searchController.text.toLowerCase())) {
           searchResults.add(doc);
         }
       }
@@ -92,8 +90,8 @@ class _AttendanceTeacherState extends State<AttendanceTeacher> {
               height: 8,
             ),
             ListBox(
-              filteredDocs: _filteredDocs,
               screenName: 'teacher',
+              filteredDocs: _filteredDocs,
             ),
           ]),
         ),
