@@ -15,7 +15,10 @@ class AttendanceStudent extends StatefulWidget {
 class _AttendanceStudentState extends State<AttendanceStudent> {
   TextEditingController _searchController = TextEditingController();
   List _allDocs = [], _filteredDocs = [];
-  String _teacherDocId = '', _classDocId = '';
+  String _teacherDocId = '',
+      _teacherName = '',
+      _classDocId = '',
+      _className = '';
 
   @override
   void initState() {
@@ -37,9 +40,12 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
   }
 
   void _getStudents() async {
-    final args = ModalRoute.of(context)!.settings.arguments as List<String>;
-    _teacherDocId = args[0];
-    _classDocId = args[1];
+    final args =
+        ModalRoute.of(context)!.settings.arguments as List<List<String>>;
+    _teacherDocId = args[0][0];
+    _teacherName = args[0][1];
+    _classDocId = args[1][0];
+    _className = args[1][1];
 
     List<Map<String, dynamic>> studentMaps = [];
 
@@ -110,7 +116,9 @@ class _AttendanceStudentState extends State<AttendanceStudent> {
               screenName: 'student',
               filteredDocs: _filteredDocs,
               teacherDocId: _teacherDocId,
+              teacherName: _teacherName,
               classDocId: _classDocId,
+              className: _className,
             ),
           ]),
         ),

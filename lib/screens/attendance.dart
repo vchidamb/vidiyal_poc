@@ -22,7 +22,12 @@ class _AttendanceState extends State<Attendance> {
 
   DateTime _focusedDay = kFirstDay;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  String _teacherDocId = '', _classDocId = '', _classStudentDocId = '';
+  String _teacherDocId = '',
+      _teacherName = '',
+      _classDocId = '',
+      _className = '',
+      _classStudentDocId = '',
+      _classStudentName = '';
   CollectionReference _attendanceReference =
       FirebaseFirestore.instance.collection('teacher');
 
@@ -33,10 +38,14 @@ class _AttendanceState extends State<Attendance> {
   }
 
   void _getDates() async {
-    final args = ModalRoute.of(context)!.settings.arguments as List<String>;
-    _teacherDocId = args[0];
-    _classDocId = args[1];
-    _classStudentDocId = args[2];
+    final args =
+        ModalRoute.of(context)!.settings.arguments as List<List<String>>;
+    _teacherDocId = args[0][0];
+    _teacherName = args[0][1];
+    _classDocId = args[1][0];
+    _className = args[1][1];
+    _classStudentDocId = args[2][0];
+    _classStudentName = args[2][1];
 
     _attendanceReference = FirebaseFirestore.instance
         .collection('teacher')
@@ -90,42 +99,89 @@ class _AttendanceState extends State<Attendance> {
         leading: BackButton(),
         title: Text('Mark Attendance'),
       ),
-      body: Column(
-        children: [
-          TableCalendar<Event>(
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
-            startingDayOfWeek: StartingDayOfWeek.sunday,
-            headerStyle: HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
-              // titleTextStyle: TextStyle(color: LogoBlue),
-            ),
-            daysOfWeekStyle: DaysOfWeekStyle(
-              weekdayStyle: TextStyle(color: Colors.white),
-              weekendStyle: TextStyle(color: Colors.white),
-            ),
-            calendarStyle: CalendarStyle(
-              isTodayHighlighted: false,
-              selectedDecoration: BoxDecoration(
-                color: LogoBlue,
-                shape: BoxShape.circle,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 8,
               ),
-              selectedTextStyle: TextStyle(color: Colors.black, fontSize: 13),
-              weekendTextStyle: TextStyle(color: Colors.white),
-              disabledTextStyle: TextStyle(color: Colors.grey[700]),
-            ),
-            selectedDayPredicate: (day) {
-              return _selectedDays.contains(day);
-            },
-            onDaySelected: _onDaySelected,
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Text(
+                  'Teacher: ' + _teacherName,
+                  style: TextStyle(
+                    fontSize: 15,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Text(
+                  'Class: ' + _className,
+                  style: TextStyle(
+                    fontSize: 15,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Text(
+                  'Student: ' + _classStudentName,
+                  style: TextStyle(
+                    fontSize: 15,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(
+                height: 5,
+                thickness: 2,
+                color: LogoBlue,
+              ),
+              TableCalendar<Event>(
+                firstDay: kFirstDay,
+                lastDay: kLastDay,
+                focusedDay: _focusedDay,
+                calendarFormat: _calendarFormat,
+                startingDayOfWeek: StartingDayOfWeek.sunday,
+                headerStyle: HeaderStyle(
+                  formatButtonVisible: false,
+                  titleCentered: true,
+                ),
+                daysOfWeekStyle: DaysOfWeekStyle(
+                  weekdayStyle: TextStyle(color: Colors.white),
+                  weekendStyle: TextStyle(color: Colors.white),
+                ),
+                calendarStyle: CalendarStyle(
+                  isTodayHighlighted: false,
+                  selectedDecoration: BoxDecoration(
+                    color: LogoBlue,
+                    shape: BoxShape.circle,
+                  ),
+                  selectedTextStyle:
+                      TextStyle(color: Colors.black, fontSize: 13),
+                  weekendTextStyle: TextStyle(color: Colors.white),
+                  disabledTextStyle: TextStyle(color: Colors.grey[700]),
+                ),
+                selectedDayPredicate: (day) {
+                  return _selectedDays.contains(day);
+                },
+                onDaySelected: _onDaySelected,
+                onPageChanged: (focusedDay) {
+                  _focusedDay = focusedDay;
+                },
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

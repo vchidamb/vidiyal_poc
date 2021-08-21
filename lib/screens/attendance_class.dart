@@ -15,7 +15,7 @@ class AttendanceClass extends StatefulWidget {
 class _AttendanceClassState extends State<AttendanceClass> {
   TextEditingController _searchController = TextEditingController();
   List _allDocs = [], _filteredDocs = [];
-  String _teacherDocId = '';
+  String _teacherDocId = '', _teacherName = '';
 
   @override
   void initState() {
@@ -37,8 +37,10 @@ class _AttendanceClassState extends State<AttendanceClass> {
   }
 
   void _getClasses() async {
-    final args = ModalRoute.of(context)!.settings.arguments as List<String>;
-    _teacherDocId = args[0];
+    final args =
+        ModalRoute.of(context)!.settings.arguments as List<List<String>>;
+    _teacherDocId = args[0][0];
+    _teacherName = args[0][1];
 
     var data = await FirebaseFirestore.instance
         .collection('teacher')
@@ -98,6 +100,7 @@ class _AttendanceClassState extends State<AttendanceClass> {
               screenName: 'class',
               filteredDocs: _filteredDocs,
               teacherDocId: _teacherDocId,
+              teacherName: _teacherName,
             ),
           ]),
         ),
