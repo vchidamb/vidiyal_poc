@@ -14,8 +14,7 @@ class AttendanceTeacher extends StatefulWidget {
 
 class _AttendanceTeacherState extends State<AttendanceTeacher> {
   TextEditingController _searchController = TextEditingController();
-  List _allDocs = [];
-  List _filteredDocs = [];
+  List _allDocs = [], _filteredDocs = [];
 
   @override
   void initState() {

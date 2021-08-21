@@ -14,8 +14,7 @@ class AttendanceClass extends StatefulWidget {
 
 class _AttendanceClassState extends State<AttendanceClass> {
   TextEditingController _searchController = TextEditingController();
-  List _allDocs = [];
-  List _filteredDocs = [];
+  List _allDocs = [], _filteredDocs = [];
   String _teacherDocId = '';
 
   @override

@@ -1,10 +1,11 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'package:vidiyal_login/widgets/menu_bar.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:vidiyal_login/constants.dart';
-import 'package:vidiyal_login/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+import 'package:vidiyal_login/utils.dart';
+import 'package:vidiyal_login/constants.dart';
+import 'package:vidiyal_login/widgets/menu_bar.dart';
 
 class Attendance extends StatefulWidget {
   static const String id = 'attendance';
@@ -19,10 +20,10 @@ class _AttendanceState extends State<Attendance> {
     hashCode: getHashCode,
   );
 
-  CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = kFirstDay;
-  String teacherDocId = "", classDocId = "", classStudentDocId = "";
-  CollectionReference attendanceReference =
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  String _teacherDocId = '', _classDocId = '', _classStudentDocId = '';
+  CollectionReference _attendanceReference =
       FirebaseFirestore.instance.collection('teacher');
 
   @override
@@ -32,20 +33,21 @@ class _AttendanceState extends State<Attendance> {
   }
 
   void _getDates() async {
-    final docId = ModalRoute.of(context)!.settings.arguments as List<String>;
-    teacherDocId = docId[0];
-    classDocId = docId[1];
-    classStudentDocId = docId[2];
-    attendanceReference = FirebaseFirestore.instance
+    final args = ModalRoute.of(context)!.settings.arguments as List<String>;
+    _teacherDocId = args[0];
+    _classDocId = args[1];
+    _classStudentDocId = args[2];
+
+    _attendanceReference = FirebaseFirestore.instance
         .collection('teacher')
-        .doc(teacherDocId)
+        .doc(_teacherDocId)
         .collection('class')
-        .doc(classDocId)
+        .doc(_classDocId)
         .collection('class_student')
-        .doc(classStudentDocId)
+        .doc(_classStudentDocId)
         .collection('class_attendance');
 
-    var data = await attendanceReference
+    var data = await _attendanceReference
         .where('class_date', isGreaterThanOrEqualTo: kFirstDay)
         .where('class_date', isLessThanOrEqualTo: kLastDay)
         .get();
@@ -63,7 +65,7 @@ class _AttendanceState extends State<Attendance> {
     if (_selectedDays.contains(selectedDay)) {
       _selectedDays.remove(selectedDay);
 
-      await attendanceReference
+      await _attendanceReference
           .where('class_date', isEqualTo: selectedDay.toUtc())
           .get()
           .then((snapshot) {
@@ -73,7 +75,7 @@ class _AttendanceState extends State<Attendance> {
       });
     } else {
       _selectedDays.add(selectedDay);
-      await attendanceReference.add({'class_date': selectedDay.toUtc()});
+      await _attendanceReference.add({'class_date': selectedDay.toUtc()});
     }
 
     setState(() {});
@@ -96,32 +98,29 @@ class _AttendanceState extends State<Attendance> {
             focusedDay: _focusedDay,
             calendarFormat: _calendarFormat,
             startingDayOfWeek: StartingDayOfWeek.sunday,
-            calendarStyle: CalendarStyle(
-              isTodayHighlighted: false,
-              selectedTextStyle: TextStyle(color: Colors.white),
-              weekendTextStyle: TextStyle(color: Colors.white),
-              disabledTextStyle: TextStyle(color: Colors.grey[700]),
-            ),
-            daysOfWeekStyle: DaysOfWeekStyle(
-              weekdayStyle: TextStyle(color: Colors.blue),
-              weekendStyle: TextStyle(color: Colors.blue),
-            ),
             headerStyle: HeaderStyle(
               formatButtonVisible: false,
               titleCentered: true,
-              titleTextStyle: TextStyle(color: Colors.blue),
+              // titleTextStyle: TextStyle(color: LogoBlue),
+            ),
+            daysOfWeekStyle: DaysOfWeekStyle(
+              weekdayStyle: TextStyle(color: Colors.white),
+              weekendStyle: TextStyle(color: Colors.white),
+            ),
+            calendarStyle: CalendarStyle(
+              isTodayHighlighted: false,
+              selectedDecoration: BoxDecoration(
+                color: LogoBlue,
+                shape: BoxShape.circle,
+              ),
+              selectedTextStyle: TextStyle(color: Colors.black, fontSize: 13),
+              weekendTextStyle: TextStyle(color: Colors.white),
+              disabledTextStyle: TextStyle(color: Colors.grey[700]),
             ),
             selectedDayPredicate: (day) {
               return _selectedDays.contains(day);
             },
             onDaySelected: _onDaySelected,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
