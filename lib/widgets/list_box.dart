@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:vidiyal_login/constants.dart';
 import 'package:vidiyal_login/screens/attendance_class.dart';
 import 'package:vidiyal_login/screens/attendance_student.dart';
 import 'package:vidiyal_login/screens/attendance.dart';
@@ -34,10 +35,7 @@ class ListBox extends StatelessWidget {
                 child: ListTile(
                   title: Text(
                     filteredDocs[index]['name'],
-                    style: TextStyle(
-                      fontSize: 15,
-                      letterSpacing: 0.5,
-                    ),
+                    style: kTextStyle,
                   ),
                   trailing: Icon(Icons.arrow_forward),
                 ),

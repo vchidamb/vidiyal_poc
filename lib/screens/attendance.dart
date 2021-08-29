@@ -112,30 +112,21 @@ class _AttendanceState extends State<Attendance> {
                 padding: const EdgeInsets.only(left: 8),
                 child: Text(
                   'Teacher: ' + _teacherName,
-                  style: TextStyle(
-                    fontSize: 15,
-                    letterSpacing: 0.5,
-                  ),
+                  style: kTextStyle,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: Text(
                   'Class: ' + _className,
-                  style: TextStyle(
-                    fontSize: 15,
-                    letterSpacing: 0.5,
-                  ),
+                  style: kTextStyle,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: Text(
                   'Student: ' + _classStudentName,
-                  style: TextStyle(
-                    fontSize: 15,
-                    letterSpacing: 0.5,
-                  ),
+                  style: kTextStyle,
                 ),
               ),
               SizedBox(
