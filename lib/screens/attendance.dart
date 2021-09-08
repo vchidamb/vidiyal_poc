@@ -75,7 +75,7 @@ class _AttendanceState extends State<Attendance> {
       _selectedDays.remove(selectedDay);
 
       await _attendanceReference
-          .where('class_date', isEqualTo: selectedDay.toUtc())
+          .where('class_date', isEqualTo: selectedDay)
           .get()
           .then((snapshot) {
         for (DocumentSnapshot ds in snapshot.docs) {
@@ -84,7 +84,7 @@ class _AttendanceState extends State<Attendance> {
       });
     } else {
       _selectedDays.add(selectedDay);
-      await _attendanceReference.add({'class_date': selectedDay.toUtc()});
+      await _attendanceReference.add({'class_date': selectedDay});
     }
 
     setState(() {});
@@ -145,7 +145,10 @@ class _AttendanceState extends State<Attendance> {
                 startingDayOfWeek: StartingDayOfWeek.sunday,
                 headerStyle: HeaderStyle(
                   formatButtonVisible: false,
+                  leftChevronVisible: false,
+                  rightChevronVisible: false,
                   titleCentered: true,
+                  headerPadding: EdgeInsets.symmetric(vertical: 20),
                 ),
                 daysOfWeekStyle: DaysOfWeekStyle(
                   weekdayStyle: TextStyle(color: Colors.white),
